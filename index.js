@@ -1,19 +1,15 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const morgan = require('morgan')
 
 app.use(bodyParser.json())
 
-const requestLogger = (request, response, next) => {
-    console.log('========Request Info=======')
-    console.log('Method: ', request.method)
-    console.log('Path: ', request.path)
-    console.log('Body: ', request.body)
-    console.log('===========================')
-    next()
-}
+morgan.token('reqBody', function getBody(req) {
+    return JSON.stringify(req.body)
+})
 
-app.use(requestLogger)
+app.use(morgan(':method :url :status :res[content-length] :reqBody'))
 
 let persons = [{
         "id": 1,
@@ -101,15 +97,13 @@ const generateId = () => {
     return Math.floor(Math.random() * 1000000)
 }
 
+// const unknownEndpoint = (request, response) => {
+//     response.status(404).send({
+//         error: 'unknown endpoint'
+//     })
+// }
 
-
-const unknownEndpoint = (request, response) => {
-    response.status(404).send({
-        error: 'unknown endpoint'
-    })
-}
-
-app.use(unknownEndpoint)
+// app.use(unknownEndpoint)
 
 const PORT = 3001
 app.listen(PORT, () => {
