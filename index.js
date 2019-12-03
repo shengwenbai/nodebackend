@@ -2,7 +2,10 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const cors = require('cors')
 
+app.use(express.static('build'))
+app.use(cors())
 app.use(bodyParser.json())
 
 morgan.token('reqBody', function getBody(req) {
@@ -32,10 +35,6 @@ let persons = [{
         "number": "39-23-6423122"
     }
 ]
-
-app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>')
-})
 
 app.get('/info', (request, response) => {
     response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${new Date()}</p>`)
@@ -105,7 +104,7 @@ const generateId = () => {
 
 // app.use(unknownEndpoint)
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
