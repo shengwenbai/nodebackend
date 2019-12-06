@@ -83,7 +83,7 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-    // 查重
+    //查重
     // Person.find({}).then(persons => {
     //     console.log(typeof (persons), persons)
     //     if (persons.find(p => p.id === body.id)) {
